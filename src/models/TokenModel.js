@@ -1,21 +1,19 @@
 const mongoose = require("mongoose");
+const { ERROR_MESSAGES: ERR } = require("../constants");
 
 const TokenSchema = new mongoose.Schema(
   {
     refreshToken: {
       type: String,
-      required: [
-        true,
-        "Refresh token is required. Please provide a refresh token.",
-      ],
+      required: [true, ERR.REFRESH_TOKEN_REQUIRED],
     },
     ipAddress: {
       type: String,
-      required: [true, "IP address is required. Please provide an IP address."],
+      required: [true, ERR.IP_ADDRESS_REQUIRED],
     },
     userAgent: {
       type: String,
-      required: [true, "User agent is required. Please provide a user agent."],
+      required: [true, ERR.USER_AGENT_REQUIRED],
     },
     isValid: {
       type: Boolean,
@@ -24,13 +22,10 @@ const TokenSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Types.ObjectId,
       ref: "User",
-      required: [
-        true,
-        "User reference is required. Please provide a user reference.",
-      ],
+      required: [true, ERR.USER_REFERENCE_REQUIRED],
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 TokenSchema.statics.createUserRef = ({ existingUser }) => {

@@ -1,9 +1,10 @@
 const { StatusCodes } = require("http-status-codes");
+const { ERROR_MESSAGES: ERR } = require("../constants");
 
 const errorHandler = (err, req, res, next) => {
   const customError = {
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
-    message: err.message || "Something went wrong try again later.",
+    message: err.message || ERR.SOMETHING_WENT_WRONG,
   };
 
   if (err.code && err.code === 11000) {

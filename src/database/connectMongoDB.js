@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { ENV } = require("../constants");
+const { ENV, ERROR_MESSAGES: ERR } = require("../constants");
 
 const connectMongoDB = async () => {
   let uriString;
@@ -15,7 +15,7 @@ const connectMongoDB = async () => {
       uriString = process.env.MONGODB_PROD;
       break;
     default:
-      throw new Error("NODE_ENV is not set to a valid environment.");
+      throw new Error(ERR.NODE_ENV);
   }
 
   await mongoose.connect(uriString);

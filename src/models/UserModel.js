@@ -2,6 +2,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const blake = require("blakejs");
+const { ERROR_MESSAGES: ERR } = require("../constants");
 const { hashPassword, hashToken } = require("../utils");
 const {
   socialMediaValidator,
@@ -13,21 +14,21 @@ const {
 const AuthenticationUserSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: [true, "Username is required."],
+    required: [true, ERR.USERNAME_REQUIRED],
     unique: true,
     maxlength: [50, "Username must be at most 50 characters long."],
   },
 
   email: {
     type: String,
-    required: [true, "Email is required."],
+    required: [true, ERR.EMAIL_REQUIRED],
     unique: true,
     validate: emailValidator,
   },
 
   password: {
     type: String,
-    required: [true, "Password is required."],
+    required: [true, ERR.PASSWORD_REQUIRED],
   },
 
   role: {
