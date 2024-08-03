@@ -1,6 +1,6 @@
 const morgan = require("morgan");
 
-const loggingMiddleware = () => {
+const loggingHttpRequests = () => {
   if (process.env.NODE_ENV === "development") {
     return morgan("tiny");
   } else {
@@ -8,4 +8,4 @@ const loggingMiddleware = () => {
   }
 };
 
-module.exports = loggingMiddleware;
+module.exports = loggingHttpRequests;
