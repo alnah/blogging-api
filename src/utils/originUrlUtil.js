@@ -1,7 +1,7 @@
+const { ENV } = require("../constants");
+
 const getOriginUrl = () => {
-  return process.env.NODE_ENV === "development"
-    ? process.env.ORIGIN_DEV
-    : process.env.ORIGIN_PROD;
+  return ENV.IS_DEV ? process.env.ORIGIN_DEV : process.env.ORIGIN_PROD;
 };
 
 module.exports = getOriginUrl;

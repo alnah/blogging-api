@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const { ENV } = require("../constants");
 const {
   createVerificationEmailTemplate,
   createResetPasswordEmailTemplate,
@@ -7,7 +8,7 @@ const {
 const _sendEmail = async ({ to, subject, html }) => {
   let configMailer, transporter, from;
 
-  if (process.env.NODE_ENV === "development") {
+  if (ENV.IS_DEV) {
     await nodemailer.createTestAccount();
 
     configMailer = {

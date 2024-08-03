@@ -1,7 +1,8 @@
 const morgan = require("morgan");
+const { ENV } = require("../constants");
 
 const loggingHttpRequests = () => {
-  if (process.env.NODE_ENV === "development") {
+  if (ENV.IS_DEV) {
     return morgan("tiny");
   } else {
     return (req, res, next) => next();

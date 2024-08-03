@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const NODE_ENV = process.env.NODE_ENV;
+const { ENV } = require("../constants");
 
 const connectMongoDB = async () => {
   let uriString;
 
-  switch (NODE_ENV) {
+  switch (ENV.NODE) {
     case "development":
       uriString = process.env.MONGODB_DEV;
       break;
@@ -19,7 +19,7 @@ const connectMongoDB = async () => {
   }
 
   await mongoose.connect(uriString);
-  console.log(`Connected to MongoDB in '${NODE_ENV}' environment.`);
+  console.log(`Connected to MongoDB in '${ENV.NODE}' environment.`);
 };
 
 module.exports = connectMongoDB;
