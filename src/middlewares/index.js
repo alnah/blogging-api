@@ -1,11 +1,19 @@
-const errorHandlerMiddleware = require("./errorHandlerMiddleware");
-const routeNotFoundMiddleware = require("./routeNotFoundMiddleware");
-const loggingMiddleware = require("./loggingMiddleware");
-const jsonParserMiddleware = require("./jsonParserMiddleware");
+const {
+  authenticateUser,
+  authorizeRoles,
+} = require("./authenticationMiddleware");
+const cookieParser = require("./parserMiddleware").cookieParser;
+const jsonParser = require("./parserMiddleware").jsonParser;
+const errorHandler = require("./errorHandlerMiddleware");
+const loggingHttpRequests = require("./loggingHttpRequestsMiddleware");
+const routeNotFound = require("./routeNotFoundMiddleware");
 
 module.exports = {
-  errorHandlerMiddleware,
-  routeNotFoundMiddleware,
-  loggingMiddleware,
-  jsonParserMiddleware,
+  authenticateUser,
+  authorizeRoles,
+  cookieParser,
+  jsonParser,
+  errorHandler,
+  loggingHttpRequests,
+  routeNotFound,
 };
