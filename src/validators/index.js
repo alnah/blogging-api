@@ -1,9 +1,23 @@
-const emailValidator = require("./emailValidator");
-const urlValidator = require("./urlValidator");
-const avatarValidator = require("./avatarValidator");
-const socialMediaValidator = require("./socialMediaValidator");
+const {
+  validateStrongPassword,
+  validateRequestValue,
+  validateRequestValues,
+  validateEitherUsernameOrEmail,
+  validateToken,
+} = require("./general");
+const {
+  emailValidator,
+  urlValidator,
+  avatarValidator,
+  socialMediaValidator,
+} = require("./schemas");
 
 module.exports = {
+  validateStrongPassword,
+  validateRequestValue,
+  validateRequestValues,
+  validateEitherUsernameOrEmail,
+  validateToken,
   emailValidator,
   urlValidator,
   avatarValidator,
