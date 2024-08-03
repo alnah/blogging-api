@@ -1,22 +1,19 @@
 require("dotenv").config();
 require("express-async-errors");
-
 const app = require("express")();
-
 const connectMongoDB = require("./database/connectMongoDB");
 const {
-  loggingHttpRequests,
+  logHttpRequests,
   jsonParser,
   cookieParser,
   routeNotFound,
   errorHandler,
 } = require("./middlewares");
-
 const { authenticationRoutes } = require("./routes");
 
 const port = process.env.PORT || 8080;
 
-app.use(loggingHttpRequests());
+app.use(logHttpRequests());
 app.use(jsonParser());
 app.use(cookieParser());
 
