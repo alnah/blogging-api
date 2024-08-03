@@ -45,7 +45,7 @@ const authorizeRoles = ([...roles]) => {
   return async (req, rest, next) => {
     if (!roles.includes(req.user.role)) {
       throw new UnauthorizedError(
-        ` Only '${roles.join(", ")}' users can access this resource.`
+        `Only '${roles.join(", ")}' users can access this resource.`
       );
     }
     next();
