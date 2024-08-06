@@ -15,14 +15,16 @@ const {
 } = require("./passwordUtil");
 const {
   determineUserRole,
-  ensureUserDoesNotExist,
-  ensureUserExists,
+  ensureUserCredentialsDoesNotExist,
+  ensureUserCredentialsExist,
+  handleFieldUpdate
 } = require("./userUtil");
 const getOriginUrl = require("./originUrlUtil");
 const { hashPassword, hashToken } = require("./hashingUtil");
 const {
   sendResetPasswordEmail,
-  sendVerificationEmail,
+  sendEmailVerification,
+  sendNewEmailVerification,
 } = require("./sendingEmailUtil");
 
 module.exports = {
@@ -37,11 +39,13 @@ module.exports = {
   verifyResetPasswordEmailNotAlreadySent,
   verifyResetPasswordLinkNotExpired,
   determineUserRole,
-  ensureUserDoesNotExist,
-  ensureUserExists,
+  ensureUserCredentialsDoesNotExist,
+  ensureUserCredentialsExist,
+  handleFieldUpdate,
   getOriginUrl,
   hashPassword,
   hashToken,
   sendResetPasswordEmail,
-  sendVerificationEmail,
+  sendEmailVerification,
+  sendNewEmailVerification,
 };
