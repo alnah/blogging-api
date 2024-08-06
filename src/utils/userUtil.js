@@ -11,7 +11,7 @@ const determineUserRole = async ({ User }) => {
   return "user";
 };
 
-const ensureUserDoesNotExist = async ({
+const ensureUserCredentialsDoesNotExist = async ({
   User,
   username = "",
   email = "",
@@ -32,7 +32,7 @@ const ensureUserDoesNotExist = async ({
   }
 };
 
-const ensureUserExists = async ({
+const ensureUserCredentialsExist = async ({
   User,
   username = "",
   email = "",
@@ -58,8 +58,19 @@ const ensureUserExists = async ({
   return existingUser;
 };
 
+const handleFieldUpdate = ({ body, fieldName, unsetData, updateData }) => {
+  if (body[fieldName] !== undefined) {
+    if (body[fieldName] === null) {
+      unsetData[fieldName] = ""; // for $unset
+    } else {
+      updateData[fieldName] = body[fieldName]; // for $set
+    }
+  }
+};
+
 module.exports = {
   determineUserRole,
-  ensureUserDoesNotExist,
-  ensureUserExists,
+  ensureUserCredentialsDoesNotExist,
+  ensureUserCredentialsExist,
+  handleFieldUpdate,
 };
