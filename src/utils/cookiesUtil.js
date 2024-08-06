@@ -1,7 +1,7 @@
 const { ENV } = require("../constants");
 const { createJsonWebToken } = require("./jsonWebTokenUtil");
 
-const attachCookies = ({ res, user, refreshToken }) => {
+const attachCookies = ({ res, user, refreshToken = {} }) => {
   const accessTokenJWT = createJsonWebToken({ payload: { user } });
   const refreshTokenJWT = createJsonWebToken({
     payload: { user, refreshToken },
