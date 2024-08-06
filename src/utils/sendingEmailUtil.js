@@ -3,6 +3,7 @@ const { ENV } = require("../constants");
 const {
   createVerificationEmailTemplate,
   createResetPasswordEmailTemplate,
+  createVerificationNewEmailTemplate,
 } = require("../templates");
 
 const _sendEmail = async ({ to, subject, html }) => {
@@ -35,13 +36,28 @@ const _sendEmail = async ({ to, subject, html }) => {
   });
 };
 
-const sendVerificationEmail = async ({
+const sendEmailVerification = async ({
   origin,
   verificationToken,
   email,
   username,
 }) => {
   const verificationEmailTemplate = createVerificationEmailTemplate({
+    origin,
+    verificationToken,
+    email,
+    username,
+  });
+  return _sendEmail(verificationEmailTemplate);
+};
+
+const sendNewEmailVerification = async ({
+  origin,
+  verificationToken,
+  email,
+  username,
+}) => {
+  const verificationEmailTemplate = createVerificationNewEmailTemplate({
     origin,
     verificationToken,
     email,
@@ -65,4 +81,8 @@ const sendResetPasswordEmail = async ({
   return _sendEmail(resetPasswordEmailTemplate);
 };
 
-module.exports = { sendVerificationEmail, sendResetPasswordEmail };
+module.exports = {
+  sendEmailVerification,
+  sendNewEmailVerification,
+  sendResetPasswordEmail,
+};
