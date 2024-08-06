@@ -13,12 +13,12 @@ const {
   createRefreshToken,
   detachCookies,
   determineUserRole,
-  ensureUserDoesNotExist,
-  ensureUserExists,
+  ensureUserCredentialsDoesNotExist,
+  ensureUserCredentialsExist,
   getOriginUrl,
   handleExistingRefreshToken,
   sendResetPasswordEmail,
-  sendVerificationEmail,
+  sendEmailVerification,
   verifyResetPasswordEmailNotAlreadySent,
   verifyResetPasswordLinkNotExpired,
   verifyTokensMatch,
@@ -35,13 +35,13 @@ const signUp = async (req, res, next) => {
     ],
   });
 
-  await ensureUserDoesNotExist({
+  await ensureUserCredentialsDoesNotExist({
     User,
     username,
     message: ERR.USERNAME_ALREADY_USED,
   });
 
-  await ensureUserDoesNotExist({
+  await ensureUserCredentialsDoesNotExist({
     User,
     email,
     message: ERR.EMAIL_ALREADY_USED,
@@ -59,7 +59,7 @@ const signUp = async (req, res, next) => {
   });
 
   const origin = getOriginUrl();
-  sendVerificationEmail({ origin, verificationToken, email, username });
+  sendEmailVerification({ origin, verificationToken, email, username });
 
   res.status(SC.CREATED).json({ message: RES.SIGNED_UP });
 };
@@ -74,7 +74,7 @@ const verifyEmail = async (req, res, next) => {
     ],
   });
 
-  const existingUser = await ensureUserExists({
+  const existingUser = await ensureUserCredentialsExist({
     User,
     email,
     message: ERR.USER_NOT_FOUND,
@@ -107,7 +107,7 @@ const login = async (req, res, next) => {
     message: ERR.PASSWORD_REQUIRED,
   });
 
-  const existingUser = await ensureUserExists({
+  const existingUser = await ensureUserCredentialsExist({
     User,
     email,
     username,
@@ -145,7 +145,7 @@ const forgotPassword = async (req, res, next) => {
 
   validateRequestValue({ value: email, message: ERR.EMAIL_REQUIRED });
 
-  const existingUser = await ensureUserExists({
+  const existingUser = await ensureUserCredentialsExist({
     User,
     email,
     message: ERR.USER_NOT_FOUND,
@@ -182,7 +182,7 @@ const resetPassword = async (req, res, next) => {
     ],
   });
 
-  const existingUser = await ensureUserExists({
+  const existingUser = await ensureUserCredentialsExist({
     User,
     email,
     message: ERR.USER_NOT_FOUND,
