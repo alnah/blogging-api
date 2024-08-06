@@ -58,6 +58,23 @@ const AuthenticationUserSchema = new mongoose.Schema({
   },
 });
 
+const UserProfileSchema = new mongoose.Schema({
+  bio: {
+    type: String,
+    maxLength: [500, "Bio must be at most 500 characters long."],
+  },
+
+  location: {
+    type: String,
+    maxlength: [50, "Location must be at most 50 characters long."],
+  },
+
+  website: {
+    type: String,
+    validate: urlValidator,
+  },
+});
+
 const SocialMediaSchema = new mongoose.Schema({
   facebook: {
     type: String,
@@ -88,29 +105,12 @@ const SocialMediaSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema(
   {
     ...AuthenticationUserSchema.obj,
-
-    bio: {
-      type: String,
-      maxLength: [500, "Bio must be at most 500 characters long."],
-    },
+    ...UserProfileSchema.obj,
+    ...SocialMediaSchema.obj,
 
     avatar: {
       type: String,
       validate: avatarValidator,
-    },
-
-    location: {
-      type: String,
-      maxlength: [50, "Location must be at most 50 characters long."],
-    },
-
-    website: {
-      type: String,
-      validate: urlValidator,
-    },
-
-    socialMedia: {
-      type: SocialMediaSchema,
     },
   },
 
@@ -120,7 +120,6 @@ const UserSchema = new mongoose.Schema(
 UserSchema.pre("save", async function () {
   // Hash password
   const isModifiedPassword = this.isModified("password");
-
   if (isModifiedPassword) {
     const hashedPassword = await hashPassword({ password: this.password });
     this.set({ password: hashedPassword });
@@ -140,19 +139,17 @@ UserSchema.pre("save", async function () {
 
 UserSchema.pre("updateOne", async function () {
   // Hash password
-  const isUpdated = this.getUpdate();
-
-  if (isUpdated.password) {
-    const hashedPassword = await hashPassword({ password: isUpdated.password });
+  const update = this.getUpdate();
+  if (update.password) {
+    const hashedPassword = await hashPassword({ password: update.password });
     this.set({ password: hashedPassword });
   }
 
   // Hash resetPasswordToken
-  const notNullToken = isUpdated.resetPasswordToken !== null;
-
-  if (isUpdated.resetPasswordToken && notNullToken) {
+  const notNullToken = update.resetPasswordToken !== null;
+  if (update.resetPasswordToken && notNullToken) {
     const hashedResetPasswordToken = await hashToken({
-      token: isUpdated.resetPasswordToken,
+      token: update.resetPasswordToken,
     });
 
     this.setUpdate({
