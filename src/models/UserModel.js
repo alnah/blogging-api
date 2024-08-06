@@ -160,6 +160,17 @@ UserSchema.pre("updateOne", async function () {
   }
 });
 
+UserSchema.statics.getFieldsForUpdate = () => {
+  const getFilteredFields = (schema) =>
+    Object.keys(schema.paths).filter(
+      (field) => field !== "__v" && field !== "_id"
+    );
+  return [
+    ...getFilteredFields(UserProfileSchema),
+    ...getFilteredFields(SocialMediaSchema),
+  ];
+};
+
 UserSchema.methods.verifyPasswordsMatch = async function ({ password }) {
   return await bcrypt.compare(password, this.password);
 };
