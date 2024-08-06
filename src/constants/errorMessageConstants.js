@@ -10,12 +10,26 @@ const ERROR_MESSAGES = {
 
   EMAIL_REQUIRED: "Please enter your email address.",
 
+  FILE_TOO_LARGE: "The uploaded file exceeds the maximum allowed size: ",
+
+  IMAGE_REQUIRED: "Uploaded file must be an image.",
+
   INVALID_CREDENTIALS:
     "The credentials you entered are incorrect. Please try again.",
 
   IP_ADDRESS_REQUIRED: "Please provide your IP address.",
 
+  MULTIPLE_IMAGES_NOT_ALLOWED: "Only one image upload is allowed.",
+
+  NEW_EMAIL_REQUIRED: "Please enter your new email address.",
+
+  NEW_PASSWORD_REQUIRED: "Please enter a new password to proceed.",
+
+  NEW_USERNAME_REQUIRED: "Please enter your new username.",
+
   NODE_ENV: "NODE_ENV is not set to a valid environment.",
+
+  NO_FILE_UPLOADED: "No file was uploaded. Please upload a file to proceed.",
 
   PASSWORD_MISMATCH: "The passwords do not match. Please try again.",
 
@@ -58,14 +72,14 @@ const ERROR_MESSAGES = {
 
   USERNAME_REQUIRED: "Please enter your username.",
 
-  USER_TOKEN_INVALID:
-    "The user token provided is invalid. Please log in again.",
-
   VERIFICATION_TOKEN_INVALID:
     "The verification token is invalid. Please check and try again.",
 
   VERIFICATION_TOKEN_REQUIRED:
     "A verification token is required to verify your email address.",
+
+  USER_TOKEN_INVALID:
+    "The user token provided is invalid. Please log in again.",
 };
 
 module.exports = ERROR_MESSAGES;
