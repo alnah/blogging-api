@@ -160,6 +160,19 @@ UserSchema.pre("updateOne", async function () {
   }
 });
 
+UserSchema.pre("findOneAndUpdate", async function () {
+  // Hash verificationToken keep new updated email
+  const update = this.getUpdate();
+  const notNullToken = update.verificationToken !== null;
+
+  if (update.verificationToken && notNullToken) {
+    const hashedVerificationToken = await hashToken({
+      token: update.verificationToken,
+    });
+    this.setUpdate({ ...update, verificationToken: hashedVerificationToken });
+  }
+});
+
 UserSchema.statics.getFieldsForUpdate = () => {
   const getFilteredFields = (schema) =>
     Object.keys(schema.paths).filter(
