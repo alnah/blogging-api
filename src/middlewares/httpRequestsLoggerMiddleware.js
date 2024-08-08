@@ -1,7 +1,7 @@
 const morgan = require("morgan");
 const { ENVIRONMENT: ENV } = require("../constants");
 
-const logHttpRequests = () => {
+const httpRequestsLogger = () => {
   if (ENV.IS_DEV) {
     return morgan("tiny");
   } else {
@@ -9,4 +9,4 @@ const logHttpRequests = () => {
   }
 };
 
-module.exports = logHttpRequests;
+module.exports = httpRequestsLogger;

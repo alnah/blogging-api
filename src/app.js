@@ -3,7 +3,7 @@ require("express-async-errors");
 const app = require("express")();
 const connectMongoDB = require("./database/connectMongoDB");
 const {
-  logHttpRequests,
+  httpRequestsLogger,
   jsonParser,
   cookieParser,
   routeNotFound,
@@ -14,7 +14,7 @@ const { authenticationRoutes, userRoutes, postRoutes } = require("./routes");
 
 const port = process.env.PORT || 8080;
 
-app.use(logHttpRequests());
+app.use(httpRequestsLogger());
 app.use(jsonParser());
 app.use(cookieParser());
 app.use(imageUploader());

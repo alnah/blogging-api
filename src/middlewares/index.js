@@ -6,7 +6,7 @@ const cookieParser = require("./parserMiddleware").cookieParser;
 const jsonParser = require("./parserMiddleware").jsonParser;
 const errorHandler = require("./errorHandlerMiddleware");
 const imageUploader = require("./imageUploaderMiddleware");
-const logHttpRequests = require("./loggingHttpRequestsMiddleware");
+const httpRequestsLogger = require("./httpRequestsLoggerMiddleware");
 const routeNotFound = require("./routeNotFoundMiddleware");
 
 module.exports = {
@@ -16,6 +16,6 @@ module.exports = {
   jsonParser,
   errorHandler,
   imageUploader,
-  logHttpRequests,
+  httpRequestsLogger,
   routeNotFound,
 };
