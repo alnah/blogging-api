@@ -53,7 +53,7 @@ const updateMyProfile = async (req, res, next) => {
     user: { id },
   } = req;
 
-  //@ts-ignore
+  // @ts-ignore
   const fields = User.getFieldsForUpdate();
   fields.forEach((fieldName) =>
     handleFieldUpdate({ body, fieldName, unsetData, updateData })
@@ -143,7 +143,7 @@ const updateMyPassword = async (req, res, next) => {
   validateStrongPassword({ password: newPassword });
 
   const existingUser = await User.findOne({ _id: id }).select(SF.INC.PASSWORD);
-  //@ts-ignore
+  // @ts-ignore
   const passwordsMatch = await existingUser.verifyPasswordsMatch({ password });
   if (!passwordsMatch) {
     throw new BadRequestError(ERR.PASSWORD_MISMATCH);
@@ -171,7 +171,7 @@ const uploadMyAvatar = async (req, res, next) => {
   }
 
   const sizeLimit = MISC.ONE_MB;
-  const errorMessage = ERR.FILE_TOO_LARGE + sizeLimit / MISC.ONE_MB + "MB";
+  const errorMessage = `${ERR.FILE_TOO_LARGE + sizeLimit / MISC.ONE_MB}MB`;
   if (req.files.avatar.size > sizeLimit) {
     throw new BadRequestError(errorMessage);
   }

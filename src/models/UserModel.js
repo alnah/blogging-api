@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const blake = require("blakejs");
-const { ENV, ERROR_MESSAGES: ERR } = require("../constants");
+const { ENVIRONMENT: ENV, ERROR_MESSAGES: ERR } = require("../constants");
 const { hashPassword, hashToken } = require("../utils");
 const {
   socialMediaValidator,
@@ -222,7 +222,7 @@ UserSchema.statics.getFieldsForUpdate = () => {
 };
 
 UserSchema.methods.verifyPasswordsMatch = async function ({ password }) {
-  return await bcrypt.compare(password, this.password);
+  return bcrypt.compare(password, this.password);
 };
 
 module.exports = mongoose.model("User", UserSchema);

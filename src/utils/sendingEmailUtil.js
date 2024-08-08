@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const { ENV } = require("../constants");
+const { ENVIRONMENT: ENV } = require("../constants");
 const {
   createVerificationEmailTemplate,
   createResetPasswordEmailTemplate,
@@ -7,7 +7,9 @@ const {
 } = require("../templates");
 
 const _sendEmail = async ({ to, subject, html }) => {
-  let configMailer, transporter, from;
+  let configMailer;
+  let transporter;
+  let from;
 
   if (ENV.IS_DEV) {
     await nodemailer.createTestAccount();
@@ -24,11 +26,11 @@ const _sendEmail = async ({ to, subject, html }) => {
     transporter = nodemailer.createTransport(configMailer);
     from = process.env.NODEMAILER_FROM;
   } else {
-    //TODO: Implement the actual email provider for production use here.
+    // TODO: Implement the actual email provider for production use here.
     return;
   }
 
-  return transporter.sendMail({
+  transporter.sendMail({
     from,
     to,
     subject,

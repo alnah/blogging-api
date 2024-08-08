@@ -26,7 +26,7 @@ const handleExistingRefreshToken = ({
 }) => {
   validateToken({ existingToken });
 
-  const refreshToken = existingToken.refreshToken;
+  const { refreshToken } = existingToken;
   const userRef = Token.createUserRef({ existingUser });
 
   attachCookies({ res, user: userRef, refreshToken });

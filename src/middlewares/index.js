@@ -2,8 +2,8 @@ const {
   authenticateUser,
   authorizeRoles,
 } = require("./authenticationMiddleware");
-const cookieParser = require("./parserMiddleware").cookieParser;
-const jsonParser = require("./parserMiddleware").jsonParser;
+const { cookieParser } = require("./parserMiddleware");
+const { jsonParser } = require("./parserMiddleware");
 const errorHandler = require("./errorHandlerMiddleware");
 const imageUploader = require("./imageUploaderMiddleware");
 const httpRequestsLogger = require("./httpRequestsLoggerMiddleware");

@@ -39,6 +39,7 @@ const authenticateUser = async (req, res, next) => {
       return next();
     }
   }
+  return next();
 };
 
 const authorizeRoles = ([...roles]) => {

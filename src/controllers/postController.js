@@ -40,7 +40,8 @@ const createPost = async (req, res, next) => {
   const createdPost = await Post.create({ title, content, tags, author });
   await User.findByIdAndUpdate(author, { $push: { posts: createdPost._id } });
   const post = createdPost.toObject();
-  delete post["__v"];
+  // @ts-ignore
+  delete post.__v;
 
   res.status(SC.CREATED).json({ post });
 };
@@ -64,8 +65,9 @@ const updatePost = async (req, res, next) => {
   };
 
   await existingPost.updateOne(update, options);
-  const optimisticUpdatedPost = { ...existingPost["_doc"], ...update };
-  delete optimisticUpdatedPost["__v"];
+  // @ts-ignore
+  const optimisticUpdatedPost = { ...existingPost._doc, ...update };
+  delete optimisticUpdatedPost.__v;
 
   res.json({ post: optimisticUpdatedPost });
 };
@@ -95,7 +97,8 @@ const updateLikes = async (req, res, next) => {
   }
 
   await existingPost.updateOne(update, options);
-  const optimisticUpdatedPost = { ...existingPost["_doc"], ...update };
+  // @ts-ignore
+  const optimisticUpdatedPost = { ...existingPost._doc, ...update };
 
   res.status(SC.OK).json({ count: optimisticUpdatedPost.likes.length });
 };
@@ -121,8 +124,8 @@ const uploadPostImages = async (req, res, next) => {
   }
 
   // Ensure postImages is an array
-  const postImages = Array.isArray(req.files.postImages) 
-    ? req.files.postImages 
+  const postImages = Array.isArray(req.files.postImages)
+    ? req.files.postImages
     : [req.files.postImages];
 
   // Validate file types
@@ -135,7 +138,7 @@ const uploadPostImages = async (req, res, next) => {
 
   // Validate file sizes
   const sizeLimit = MISC.ONE_MB;
-  const errorMessage = ERR.FILE_TOO_LARGE + sizeLimit / MISC.ONE_MB + "MB";
+  const errorMessage = `${ERR.FILE_TOO_LARGE + sizeLimit / MISC.ONE_MB}MB`;
   postImages.forEach((file) => {
     if (file.size > sizeLimit) {
       throw new BadRequestError(errorMessage);

@@ -17,7 +17,7 @@ const {
   determineUserRole,
   ensureUserCredentialsDoesNotExist,
   ensureUserCredentialsExist,
-  handleFieldUpdate
+  handleFieldUpdate,
 } = require("./userUtil");
 const getOriginUrl = require("./originUrlUtil");
 const { hashPassword, hashToken } = require("./hashingUtil");

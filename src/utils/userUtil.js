@@ -61,8 +61,10 @@ const ensureUserCredentialsExist = async ({
 const handleFieldUpdate = ({ body, fieldName, unsetData, updateData }) => {
   if (body[fieldName] !== undefined) {
     if (body[fieldName] === null) {
+      // eslint-disable-next-line no-param-reassign
       unsetData[fieldName] = ""; // for $unset
     } else {
+      // eslint-disable-next-line no-param-reassign
       updateData[fieldName] = body[fieldName]; // for $set
     }
   }

@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const { ERROR_MESSAGES: ERR } = require("../constants");
+const { ERROR_MESSAGES: ERR, ENVIRONMENT: ENV } = require("../constants");
 
 const errorHandler = (err, req, res, next) => {
   const customError = {
@@ -26,9 +26,13 @@ const errorHandler = (err, req, res, next) => {
     customError.statusCode = StatusCodes.NOT_FOUND;
   }
 
+  if (ENV.IS_DEV) {
+    customError.stack = err.stack;
+  }
+
   return res
     .status(customError.statusCode)
-    .json({ message: customError.message });
+    .json({ message: customError.message, stack: customError.stack });
 };
 
 module.exports = errorHandler;

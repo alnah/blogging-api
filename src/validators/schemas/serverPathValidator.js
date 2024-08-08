@@ -6,7 +6,7 @@ const serverPath =
 const serverPathValidator = {
   validator: (v) => v.startsWith(`${serverPath}`),
   message: (props) =>
-    `${props.value} is not a valid path. It should start with ` + serverPath,
+    `${props.value} is not a valid path. It should start with ${serverPath}`,
 };
 
 module.exports = serverPathValidator;

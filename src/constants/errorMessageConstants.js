@@ -11,7 +11,8 @@ const ERROR_MESSAGES = {
   INVALID_CREDENTIALS:
     "The credentials you entered are incorrect. Please try again.",
   IP_ADDRESS_REQUIRED: "Please provide your IP address.",
-  MAX_FILES_EXCEEDED: "You have exceeded the maximum number of files allowed. " +
+  MAX_FILES_EXCEEDED:
+    "You have exceeded the maximum number of files allowed. " +
     "Please reduce the number of files to 5 and try again.",
   MULTIPLE_IMAGES_NOT_ALLOWED: "Only one image can be uploaded at a time.",
   NEW_EMAIL_REQUIRED: "Please enter your new email address.",

@@ -9,7 +9,7 @@ const validateRequestValue = ({ value, message }) => {
 
 const validateRequestValues = ({ requiredRequestValues }) => {
   requiredRequestValues.forEach(({ value, message }) =>
-    validateRequestValue({ value, message }),
+    validateRequestValue({ value, message })
   );
 };
 
