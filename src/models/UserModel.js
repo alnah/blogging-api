@@ -2,13 +2,13 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const blake = require("blakejs");
-const { ERROR_MESSAGES: ERR } = require("../constants");
+const { ENV, ERROR_MESSAGES: ERR } = require("../constants");
 const { hashPassword, hashToken } = require("../utils");
 const {
   socialMediaValidator,
   emailValidator,
   urlValidator,
-  avatarValidator,
+  serverPathValidator,
 } = require("../validators");
 
 const AuthenticationUserSchema = new mongoose.Schema({
@@ -108,16 +108,39 @@ const UserSchema = new mongoose.Schema(
     ...UserProfileSchema.obj,
     ...SocialMediaSchema.obj,
 
-    avatar: {
+    userUrl: {
       type: String,
-      validate: avatarValidator,
+      validate: serverPathValidator,
     },
+
+    avatarUrl: {
+      type: String,
+      validate: serverPathValidator,
+    },
+
+    posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
   },
 
   { timestamps: true }
 );
 
 UserSchema.pre("save", async function () {
+  // Create userURL
+  const isModifiedUsername = this.isModified("username");
+  if (isModifiedUsername) {
+    this.set({
+      userUrl:
+        ENV.IS_DEV || ENV.IS_TEST
+          ? `${process.env.ORIGIN_DEV}/@${this.username}`
+          : `${process.env.ORIGIN_PROD}/@${this.username}`,
+    });
+  }
+
   // Hash password
   const isModifiedPassword = this.isModified("password");
   if (isModifiedPassword) {
@@ -161,10 +184,24 @@ UserSchema.pre("updateOne", async function () {
 });
 
 UserSchema.pre("findOneAndUpdate", async function () {
-  // Hash verificationToken keep new updated email
   const update = this.getUpdate();
-  const notNullToken = update.verificationToken !== null;
+  // Update userUrl
+  if (update.username) {
+    this.set({
+      userUrl:
+        ENV.IS_DEV || ENV.IS_TEST
+          ? `${process.env.ORIGIN_DEV}/@${update.username}/profile`
+          : `${process.env.ORIGIN_PROD}/@${update.username}/profile`,
 
+      avatarUrl:
+        ENV.IS_DEV || ENV.IS_TEST
+          ? `${process.env.ORIGIN_DEV}/@${update.username}/avatar`
+          : `${process.env.ORIGIN_PROD}/@${update.username}/avatar`,
+    });
+  }
+
+  // Hash verificationToken keep new updated email
+  const notNullToken = update.verificationToken !== null;
   if (update.verificationToken && notNullToken) {
     const hashedVerificationToken = await hashToken({
       token: update.verificationToken,
