@@ -8,7 +8,7 @@ const {
 const {
   emailValidator,
   urlValidator,
-  avatarValidator,
+  serverPathValidator,
   socialMediaValidator,
 } = require("./schemas");
 
@@ -20,6 +20,6 @@ module.exports = {
   validateToken,
   emailValidator,
   urlValidator,
-  avatarValidator,
+  serverPathValidator,
   socialMediaValidator,
 };
