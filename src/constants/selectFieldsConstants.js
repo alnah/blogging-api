@@ -1,5 +1,6 @@
 const SELECT_FIELDS = {
   EXC: {
+    VERSION: "-__v",
     PASSWORD: "-password",
     SENSITIVE:
       "-verificationToken -resetPasswordToken " +

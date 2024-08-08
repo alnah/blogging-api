@@ -1,13 +1,13 @@
 const fs = require("fs");
 const { StatusCodes: SC } = require("http-status-codes");
 const {
-  SELECT_FIELDS: SF,
   ERROR_MESSAGES: ERR,
+  ENVIRONMENT: ENV,
+  MISCELLANEOUS: MISC,
+  SELECT_FIELDS: SF,
   RESPONSE_MESSAGES: RES,
-  ONE_MB: SIZE_LIMIT,
-  ONE_MB,
 } = require("../constants");
-const { BadRequestError } = require("../errors");
+const { BadRequestError, NotFoundError } = require("../errors");
 const { User } = require("../models");
 const {
   validateRequestValues,
@@ -22,7 +22,6 @@ const {
   attachCookies,
   handleFieldUpdate,
 } = require("../utils");
-const { AVATARS_DIR } = require("../constants/miscellaneousConstants");
 
 const getAllUsers = async (req, res, next) => {
   const allUsers = await User.find({}).select(SF.EXC.PASSWORD);
@@ -34,7 +33,7 @@ const getUser = async (req, res, next) => {
   const existingUser = await User.findOne({ _id: id }).select(SF.EXC.SENSITIVE);
   if (!existingUser) {
     const message = `No user found with the provided id: "${id}". Please try again.`;
-    throw new BadRequestError(message);
+    throw new NotFoundError(message);
   }
 
   res.status(SC.OK).json({ user: existingUser });
@@ -53,7 +52,7 @@ const updateMyProfile = async (req, res, next) => {
     body,
     user: { id },
   } = req;
-  
+
   //@ts-ignore
   const fields = User.getFieldsForUpdate();
   fields.forEach((fieldName) =>
@@ -154,9 +153,9 @@ const updateMyPassword = async (req, res, next) => {
   res.status(SC.OK).json({ message: RES.PASSWORD_UPDATED });
 };
 
-const updateMyAvatar = async (req, res, next) => {
-  const { id } = req.user;
-  const targetPath = `${AVATARS_DIR}${id}.png`;
+const uploadMyAvatar = async (req, res, next) => {
+  const { id, username } = req.user;
+  const targetPath = `${MISC.AVATARS_DIR}${id}.png`;
 
   if (!req.files || !req.files.avatar) {
     throw new BadRequestError(ERR.NO_FILE_UPLOADED);
@@ -171,16 +170,26 @@ const updateMyAvatar = async (req, res, next) => {
     throw new BadRequestError(ERR.IMAGE_REQUIRED);
   }
 
-  if (req.files.avatar.size > SIZE_LIMIT) {
-    throw new BadRequestError(ERR.FILE_TOO_LARGE + SIZE_LIMIT / ONE_MB + "MB");
+  const sizeLimit = MISC.ONE_MB;
+  const errorMessage = ERR.FILE_TOO_LARGE + sizeLimit / MISC.ONE_MB + "MB";
+  if (req.files.avatar.size > sizeLimit) {
+    throw new BadRequestError(errorMessage);
   }
 
-  if (!fs.existsSync(AVATARS_DIR)) {
-    fs.mkdirSync(AVATARS_DIR, { recursive: true });
+  if (!fs.existsSync(MISC.AVATARS_DIR)) {
+    fs.mkdirSync(MISC.AVATARS_DIR, { recursive: true });
   }
 
   req.files.avatar.mv(targetPath);
-  await User.findOneAndUpdate({ _id: id }, { avatar: targetPath });
+  await User.findOneAndUpdate(
+    { _id: id },
+    {
+      avatarUrl:
+        ENV.IS_DEV || ENV.IS_TEST
+          ? `${process.env.ORIGIN_DEV}/@${username}/avatar`
+          : `${process.env.ORIGIN_PROD}/@${username}/avatar`,
+    }
+  );
 
   res.status(SC.OK).json({ image: { src: targetPath } });
 };
@@ -199,6 +208,6 @@ module.exports = {
   updateMyUsername,
   updateMyEmail,
   updateMyPassword,
-  updateMyAvatar,
+  uploadMyAvatar,
   deleteMyAccount,
 };

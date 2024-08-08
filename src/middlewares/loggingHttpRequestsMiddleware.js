@@ -1,5 +1,5 @@
 const morgan = require("morgan");
-const { ENV } = require("../constants");
+const { ENVIRONMENT: ENV } = require("../constants");
 
 const logHttpRequests = () => {
   if (ENV.IS_DEV) {

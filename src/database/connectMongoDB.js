@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { ENV, ERROR_MESSAGES: ERR } = require("../constants");
+const { ENVIRONMENT: ENV, ERROR_MESSAGES: ERR } = require("../constants");
 
 const connectMongoDB = async () => {
   let uriString;

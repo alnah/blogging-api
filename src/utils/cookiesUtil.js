@@ -1,4 +1,4 @@
-const { ENV } = require("../constants");
+const { ENVIRONMENT: ENV } = require("../constants");
 const { createJsonWebToken } = require("./jsonWebTokenUtil");
 
 const attachCookies = ({ res, user, refreshToken = {} }) => {

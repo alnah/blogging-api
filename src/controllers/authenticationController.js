@@ -1,5 +1,9 @@
 const { StatusCodes: SC } = require("http-status-codes");
-const { ERROR_MESSAGES: ERR, RESPONSE_MESSAGES: RES } = require("../constants");
+const {
+  ERROR_MESSAGES: ERR,
+  RESPONSE_MESSAGES: RES,
+  SELECT_FIELDS: SF,
+} = require("../constants");
 const { UnauthenticatedError } = require("../errors");
 const { User, Token } = require("../models");
 const {
@@ -128,7 +132,8 @@ const login = async (req, res, next) => {
   }
   await createRefreshToken({ Token, req, res, existingUser });
 
-  res.status(SC.OK).json({ user: existingUser });
+  const user = await User.findById(existingUser._id).select(SF.EXC.SENSITIVE);
+  res.status(SC.OK).json({ user });
 };
 
 const logout = async (req, res, next) => {
