@@ -1,6 +1,9 @@
 # TODO
 TODO.md
 
+# uploads
+/src/uploads/*
+
 # macOS specific
 .DS_Store
 .AppleDouble
